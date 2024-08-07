@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="book-list-section" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'remove')">
+    <div class="header">
+      <div class="search-container">
+        <div class="slide-wrapper">
+          <input id="searchPagesRange" type="range" min="0" max="1200" step="1" [(ngModel)]="searchPages"
+            (input)="syncInputs($event)" class="search-by-pages-range" />
+          <input type="number" min="0" max="1200" placeholder="Search by Pages" [(ngModel)]="searchPages"
+            (input)="syncInputs($event)" class="search-by-pages-number" />
+        </div>
+        <select [(ngModel)]="searchGenre" class="select">
+          <option value="">Todas</option>
+          <option value="Fantasía">Fantasía</option>
+          <option value="Ciencia ficción">Ciencia ficción</option>
+          <option value="Zombies">Zombies</option>
+          <option value="Terror">Terror</option>
+        </select>
+        <input type="text" placeholder="Search..." [(ngModel)]="searchText" class="search-wrapper" />
+        <button (click)="search()" class="btn-search">Search</button>
+        <button (click)="clearSearch()" class="btn-clearSearch">Clear</button>
+        <label for="books-amount">Books: {{booksAmount}}</label>
+      </div>
+    </div>
+
+    <div class="book-list">
+      <div class="book" *ngFor="let book of booksFound.length > 0 ? booksFound : books" draggable="true"
+        (dragstart)="onDragStart($event, book)">
+        <img [src]="book.cover" alt="{{ book.title }}" />
+        <h2>{{ book.title }}</h2>
+        <p>{{ book.author.name }}</p>
+        <p>{{ book.genre }}</p>
+        <p>{{ book.pages }} páginas</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reading-list-section" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'add')">
+    <h2>Reading List</h2>
+    <label for="books-amount">Books: {{listAmount}}</label>
+    <div class="reading-list">
+      <div class="book" *ngFor="let book of readingList" draggable="true" (dragstart)="onDragStart($event, book)">
+        <!-- El botón de eliminar ahora está posicionado en la esquina superior izquierda -->
+        <button (click)="removeFromReadingList(book)" class="btn-remove">X</button>
+        <img [src]="book.cover" alt="{{ book.title }}" />
+        <h2>{{ book.title }}</h2>
+        <p>{{ book.author.name }}</p>
+        <p>{{ book.genre }}</p>
+        <p>{{ book.pages }} páginas</p>
+      </div>
+    </div>
+  </div>
+
+</div>
